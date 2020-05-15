@@ -6,4 +6,4 @@ blue = Blueprint('home',__name__,template_folder='templates')
 @blue.route('/')
 def home():
 
-	return render_template('home/index.html',title='VXL:OneWebAccess')
+	return render_template('home/index.html',title='VXL : OneWebAccess')
