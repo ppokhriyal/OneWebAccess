@@ -1,0 +1,10 @@
+{% extends 'home/layout.html' %}
+{% block content %}
+	<nav aria-label="breadcrumb">
+  		<ol class="breadcrumb">
+    		<li class="breadcrumb-item"><i class="fas fa-home mr-2"></i><a href="{{url_for('home.home')}}">Home</a></li>
+    		<li class="breadcrumb-item"><i class="fas fa-box mr-2"></i><a href="{{url_for('packagebuild.home')}}">Package Builder</a></li>
+    		<li class="breadcrumb-item active" aria-current="page">New Build</li>
+  		</ol>
+	</nav>
+{% endblock content %}

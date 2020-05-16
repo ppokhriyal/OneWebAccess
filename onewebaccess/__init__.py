@@ -10,11 +10,14 @@ app.config ['SQLALCHEMY_BINDS'] = {'users':'sqlite:///users.db'}
 db = SQLAlchemy(app)
 bcrypt = Bcrypt(app)
 login_manager = LoginManager(app)
-login_manager.login_view = 'home.singin'
+login_manager.session_protection = "strong"
+login_manager.login_view = 'home.signin'
 login_manager.login_message_category = 'info'
 
 #Import Blueprint routes objects
 from onewebaccess.home.routes import blue
+from onewebaccess.packagebuild.routes import blue
 
 #Register Blueprint
 app.register_blueprint(home.routes.blue)
+app.register_blueprint(packagebuild.routes.blue,url_prefix='/pb')

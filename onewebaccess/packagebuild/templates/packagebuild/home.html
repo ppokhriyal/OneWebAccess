@@ -1,0 +1,15 @@
+{% extends 'home/layout.html' %}
+{% block content %}
+	<nav aria-label="breadcrumb">
+  		<ol class="breadcrumb">
+    		<li class="breadcrumb-item"><i class="fas fa-home mr-2"></i><a href="{{url_for('home.home')}}">Home</a></li>
+    		<li class="breadcrumb-item active" aria-current="page"><i class="fas fa-box mr-2"></i>Package Builder</li>
+  		</ol>
+	</nav>
+	<div class="btn-group float-right" role="group" aria-label="Basic example">
+		<button type="button" class="btn btn-sm btn-info" disabled>Total Builds : 0</button>
+		<a class="btn btn-sm btn-primary btn-success" href="{{url_for('packagebuild.build')}}" role="button">Create new package</a>
+	</div>
+	
+	
+{% endblock content %}
