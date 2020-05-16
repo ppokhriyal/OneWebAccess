@@ -7,4 +7,119 @@
     		<li class="breadcrumb-item active" aria-current="page">New Build</li>
   		</ol>
 	</nav>
+	<p class="h5">Create a new package</p>
+	<hr class="my-3">
+	<form  method="POST" action="" style="font-size:16px">
+		{{form.hidden_tag()}}
+		<div class="form-group row">
+			<label class="col-sm-2 col-form-label">Package Build Id</label>
+			<div class="col-sm-6">
+				{{form.buildid(class="form-control",value=build)}}
+			</div>
+		</div>
+		<div class="form-group row">
+			<label class="col-sm-2 col-form-label">Package Name</label>
+			<div class="col-sm-6">
+				{% if form.pkgname.errors %}
+					{{form.pkgname(class="form-control is-invalid ")}}
+					<small><code>Before package name give the prefix <strong>'apps:' ,'basic:' or 'core:'</strong></code></small>
+					<div class="invalid-feedback">
+						{% for error in form.pkgname.errors %}
+							<span>{{ error }}</span>
+						{% endfor %}
+					</div>
+				{% else %}
+					{{form.pkgname(class="form-control")}}
+					<small><code>Before package name give the prefix <strong>'apps:' ,'basic:' or 'core:'</strong></code></small>
+				{% endif %}
+			</div>
+		</div>
+		<div class="form-group row">
+    		<label class="col-sm-2 col-form-label">Description</label>
+    		<div class="col-sm-6">
+    			{{form.description(class="form-control")}}
+    		</div>
+  		</div>
+  		<div class="form-group row">
+    		<label class="col-sm-2 col-form-label">Architecture</label>
+    		<div class="col-sm-6">
+      			{{form.osarch(class="form-control")}}
+    		</div>
+  		</div>
+  		<div class="form-group row">
+    		<label class="col-sm-2 col-form-label">Package Source</label>
+    		<div class="col-sm-6">
+      			{{form.pkgsourcepath(class="form-control",placeholder="/absolute/path")}}
+      			<small><code>Give absolute path for the package structure</code></small>
+    		</div>
+  		</div>
+  		<!--Patch Form-->
+  		<div class="form-group form-check">
+  			{{form.patchboolean(class="form-check-input",id="patchcheck",onclick="mycheckfunc()",**{'data-toggle':'collapse','href':'#collapseExample'})}}
+  			<label class="form-check-label ml-2"><strong>Prepare Patch for new build package</strong></label>
+  		</div>
+  		<div class="collapse" id="collapseExample">
+  			<hr class="my-2">
+  			<div class="form-group row">
+        		<label class="col-sm-2 col-form-label">Patch Name</label>
+        		<div class="col-sm-6">
+          			{{form.patchname(class="form-control",id="patchname")}}
+        		</div>
+      		</div>
+      		<div class="form-group row">
+        		<label class="col-sm-2 col-form-label">Patch Mode</label>
+        		<div class="col-sm-6">
+            		{{form.patchtype(class="form-control",id="patchmode")}}
+            		<small><code><strong>Current Patch </strong> is available for 005 Build image and above</code></small><br>
+            		<small><code><strong>Legacy Patch </strong> is available for 45 Build image and below</code></small>
+        		</div>
+      		</div>
+      		<p><strong>Remove Files and Packages</strong>
+  				<br><small>List all the Files and Packages to be removed. Use smi-colon ' ; ' as a seprator.<br>Prefixes : <b>boot:, core:, basic:, apps:, data: and root:</b>.<br>
+        		Wild-Card : You can give the <b>wild-card "*"</b> after the package name.<b>e.g apps:example*;basic:example2*</b></small></p>
+  			<div class="form-group row">
+    			<div class="col-sm-10 ">
+      				{{form.removepkg(class="form-control",id="remove",placeholder='Example : apps:abc.sq;boot:kernel;apps:example*;basic:example2*')}}
+    			</div>
+  			</div>
+  	  		<p><strong>Install Script </strong>
+  			<br><small>Write your custom install script.</small></p>
+  			<div class="form-group row">
+    			<div class="col-sm-10">
+      				{{form.install_script(class="form-control",id="installscript")}}
+    			</div>
+  			</div>
+  		</div>	
+  	  	<div class="border-top pt-2"></div>
+  	  	<div class="form-group row">
+    		<div class="col-sm-5">
+       			{{form.submit(class="btn btn-sm btn-primary")}}
+       			<a class="btn btn-sm btn-warning" href="{{url_for('packagebuild.home')}}" role="button">Cancel</a>
+    		</div>
+  	  	</div>
+	</form>
+	<script type="text/javascript">
+    document.getElementById("patchname").disabled = true;
+    document.getElementById("patchmode").disabled = true;
+    document.getElementById("remove").disabled = true;
+    document.getElementById("installscript").disabled = true;
+  </script>
+  <script type="text/javascript">
+     function mycheckfunc(){
+      var checkBox = document.getElementById("patchcheck");
+
+      if (checkBox.checked == true){
+          document.getElementById("patchname").disabled = false;
+          document.getElementById("patchmode").disabled = false;
+          document.getElementById("remove").disabled = false;
+          document.getElementById("installscript").disabled = false;
+      }
+      else{
+        document.getElementById("patchname").disabled = true;
+        document.getElementById("patchmode").disabled = true;
+        document.getElementById("remove").disabled = true;
+        document.getElementById("installscript").disabled = true;
+      }
+     }
+  </script>
 {% endblock content %}
