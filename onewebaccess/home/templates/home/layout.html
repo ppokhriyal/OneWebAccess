@@ -25,43 +25,57 @@
   			<div class="collapse navbar-collapse" id="navbarResponsive">
   				<ul class="navbar-nav ml-auto">
   					<li class="nav-item">
-  						<a class="nav-link active" href="#">Sign in <span class="sr-only">(current)</span></a>
+  						<a class="nav-link" href="{{url_for('home.home')}}">Sign in <span class="sr-only">(current)</span></a>
   					</li>
   					<li class="nav-item">
-  						<a class="nav-link active" href="#">Sign up<span class="sr-only">(current)</span></a>
+  						<a class="nav-link" href="{{url_for('home.signup')}}">Sign up<span class="sr-only">(current)</span></a>
   					</li>
   				</ul>
   			</div>
   		</div>
   	</nav>
   	<!--Jumbotron-->
-  	<div class="container">
-  		<div class="jumbotron">
-  			
-  			<h1 class="display-4">Hello, welcome!</h1>
-  			<p class="lead">One Web Access is a one point access to all the below applications</p>
-  			<hr class="my-2">
-  			<div class="row">
-  				<div class="col">
-  					<ul style="list-style-type:none;">
-  						<li class="mt-2"><i class="fas fa-blog mr-2"></i> Knowledge Base Blog</li>
-  						<li class="mt-2"><i class="fas fa-headset mr-2"></i> Clientele Call Logs Management</li>
-  						<li class="mt-2"><i class="fas fa-laptop mr-2"></i> Register remote nodes</li>
-  					</ul>
-  				</div>
-  				<div class="col">
-  					<ul style="list-style-type:none;">
-  						<li class="mt-2"><i class="fas fa-box mr-2"></i> Package Building</li>
-  						<li class="mt-2"><i class="fas fa-cubes mr-2"></i> Firmware Updates</li>
-  						<li class="mt-2"><i class="fas fa-diagnoses mr-2"></i> Image Build</li>
-  					</ul>		
-  				</div>	
+  	<div class="jumbotron">
+  		<div class="container">
+  		<div class="row">
+  			<div class="col-sm-6">
+  					<h1 class="display-4 text-center">Hello, welcome!</h1>
+  					<p class="text-center text-info">One Web Access is a one point access to all the below services</p>
+  					<hr class="my-2">
+  					<div class="row">
+  						<div class="col">
+  							<ul style="list-style-type:none;">
+  								<li class="mt-2"><i class="fas fa-blog mr-2"></i> Knowledge Base Blog</li>
+  								<li class="mt-2"><i class="fas fa-headset mr-2"></i> Clientele Call Logs</li>
+  								<li class="mt-2"><i class="fas fa-laptop mr-2"></i> Register remote nodes</li>
+  							</ul>
+  						</div>
+  						<div class="col">
+  							<ul style="list-style-type:none;">
+  								<li class="mt-2"><i class="fas fa-box mr-2"></i> Package Building</li>
+  								<li class="mt-2"><i class="fas fa-cubes mr-2"></i> Firmware Updates</li>
+  								<li class="mt-2"><i class="fas fa-diagnoses mr-2"></i> Image Build</li>
+  							</ul>		
+  						</div>
+  					</div>
   			</div>
-  			
-
+  			<div class="col-sm-6">
+  				{% block content %}
+  				{% endblock content %}
+  			</div>
   		</div>
+  		</div>	
+	</div>
+	<!--Services Card-->
+	<div class="container">
+		<div class="card">
+			<div class="card-body">
+				<h5 class="card-title">Knowledge Base Blog</h5>
+				<p class="card-text">Be first to share your Knowledge</p>
+				<a href="#" class="btn btn-primary"></a>
+			</div>
 		</div>
-	</div>	
+	</div>
     <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
     <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
