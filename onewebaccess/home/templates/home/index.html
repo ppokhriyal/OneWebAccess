@@ -1,45 +1,28 @@
 {% extends 'home/layout.html' %}
 {% block content %}
-	<div class="card bg-light rounded-0 border-0">
-		<div class="card-header bg-light"><h4>Sign in</h4></div>
-		<div class="card-body">
-			<form method="POST" action="">
-				{{form.hidden_tag()}}
-				<div class="form-group">
-					<label>Email address</label>
-					{% if form.email.errors %}
-						{{ form.email(class="form-control is-invalid")}}
-						<div class="invalid-feedback">
-							{% for error in form.email.errors %}
-								<span>{{ error }}</span>
-							{% endfor %}
-						</div>
-					{% else %}
-						{{ form.email(class="form-control",placeholder="Enter email @vxlsoftware.com")}}	
-					{% endif %}
-				</div>
-				<div class="form-group">
-					<label>Password</label>
-					{% if form.password.errors %}
-						{{ form.password(class="form-control is-invalid")}}
-						<div class="invalid-feedback">
-							{% for error in form.password.errors %}
-								<span>{{ error }}</span>
-							{% endfor %}
-						</div>
-					{% else %}
-						{{ form.password(class="form-control",placeholder="Password")}}	
-					{% endif %}
-				</div>
-				<div class="form-group">
-					{{ form.submit(class="btn btn-primary")}}
-				</div>
-				<div class="border-top pt-2">
-					<small class="text-muted">
-						Need An Account? <a class="ml-2" href="{{url_for('home.signup')}}">Sign Up Now</a>
-					</small>
-				</div>
-			</form>
+<div class="jumbotron jumbotron-fluid">
+  <div class="container">
+    <h1 class="display-5 text-center">One Web Access</h1>
+    <p class="text-center text-info">One Web Access is a one point access to all the below services</p>
+    <hr class="my-2">
+    <div class="row">
+    	<div class="col-md-2"></div>
+    	<div class="col">
+    		<ul style="list-style-type:none;">
+  				<li class="mt-2"><i class="fas fa-blog mr-3"></i><a href="">Knowledge Base Blog</a> </li>
+  				<li class="mt-2"><i class="fas fa-headset mr-3"></i><a href="">Clientele Call Logs</a></li>
+  				<li class="mt-2"><i class="fas fa-laptop mr-3"></i><a href="">Register remote nodes</a></li>
+			</ul>
 		</div>
-	</div>
+		<div class="col">	
+  			<ul style="list-style-type:none;">
+  				<li class="mt-2"><i class="fas fa-box mr-3"></i><a href="">Package Building</a></li>
+  				<li class="mt-2"><i class="fas fa-cubes mr-3"></i><a href="">Firmware Updates</a></li>
+  				<li class="mt-2"><i class="fas fa-diagnoses mr-3"></i><a href="">Image Build</li>
+  			</ul>
+  		</div>
+  		<div class="col-md-2"></div>
+  	</div>			
+  </div>
+
 {% endblock content %}

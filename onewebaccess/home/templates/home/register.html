@@ -2,8 +2,8 @@
 {% block content %}
 	<form method="POST" action="">
 	{{ form.hidden_tag() }}
-		<div class="card bg-light border-0 text-sm">
-  			<div class="card-header bg-light"><h4>Sign up</h4></div>
+		<div class="card border-0">
+  			<div class="card-header"><h4>Sign up</h4></div>
   			<div class="card-body">
 
     			<div class="form-group">
@@ -69,7 +69,7 @@
   				
   				<div class="border-top pt-2">
     				<small class="text-muted">
-      					Already Have An Account? <a class="ml-2" href="{{url_for('home.home')}}">Sign In Now</a>
+      					Already Have An Account? <a class="ml-2" href="{{url_for('home.signin')}}">Sign In Now</a>
     				</small>
   				</div>
   			</div>
