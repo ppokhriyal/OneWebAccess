@@ -6,10 +6,51 @@
     		<li class="breadcrumb-item active" aria-current="page"><i class="fas fa-laptop mr-3"></i>Register Node</li>
   		</ol>
 	</nav>
-	<div class="btn-group float-right" role="group" aria-label="Basic example">
-		<button type="button" class="btn btn-sm btn-info" disabled>Total Nodes : 0</button>
+	<div class="container mt-3">
+	<div class="btn-group float-right mb-2" role="group" aria-label="Basic example">
+		<button type="button" class="btn btn-sm btn-info" disabled>Total Nodes : {{reg_node_count}}</button>
 		<a class="btn btn-sm btn-primary btn-success" href="{{url_for('registernode.add')}}" role="button">Add new node</a>
 	</div>
 	
-	
+	<table class="table table-hover  table-sm "id="tablepaginate">
+  	<thead class="thead-dark">
+    <tr>
+      <th scope="col">ID</th>
+      <th scope="col">IP-Address</th>
+      <th scope="col">Hostname</th>
+      <th scope="col">Status</th>
+      <th scope="col">Action</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th scope="row">1</th>
+      <td>Mark</td>
+      <td>Otto</td>
+      <td>@mdo</td>
+      <td>@mdo</td>
+    </tr>
+    <tr>
+      <th scope="row">2</th>
+      <td>Jacob</td>
+      <td>Thornton</td>
+      <td>@fat</td>
+      <td>@fat</td>
+    </tr>
+    <tr>
+      <th scope="row">3</th>
+      <td colspan="2">Larry the Bird</td>
+      <td>@twitter</td>
+      <td>@fat</td>
+    </tr>
+     <tr>
+      <th scope="row">4</th>
+      <td colspan="2">Larry the Bird</td>
+      <td>@twitter</td>
+      <td>@fat</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
 {% endblock content %}

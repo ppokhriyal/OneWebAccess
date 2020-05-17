@@ -1,17 +1,22 @@
 from flask import Flask
+from celery import Celery
 from flask_sqlalchemy import SQLAlchemy
 from flask_bcrypt import Bcrypt
 from flask_login import LoginManager
 
+
 app = Flask(__name__)
 app.config['SECRET_KEY'] = '878436c0a462c4145fa59eec2c43a66a'
+app.config['CELERY_BROKER_URL'] = 'amqp://localhost//'
+app.config['CELERY_BACKEND'] = 'db+sqlite:///result.db'
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///users.db'
 app.config ['SQLALCHEMY_BINDS'] = {'users':'sqlite:///users.db','regnode':'sqlite:///regnode.db','pb':'sqlite:///pb.db'}
 
+celery = Celery(app)
 db = SQLAlchemy(app)
 bcrypt = Bcrypt(app)
 login_manager = LoginManager(app)
-login_manager.session_protection = "strong"
+#login_manager.session_protection = "strong"
 login_manager.login_view = 'home.signin'
 login_manager.login_message_category = 'info'
 

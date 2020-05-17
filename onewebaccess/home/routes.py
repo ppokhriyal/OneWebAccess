@@ -1,8 +1,8 @@
 from flask import Blueprint,render_template,url_for, flash, redirect, request, abort, session,jsonify
-from onewebaccess import app,db, bcrypt
+from onewebaccess import app,db, bcrypt,login_manager
 from onewebaccess.home.forms import LoginForm,RegistrationForm
 from flask_login import login_user, current_user, logout_user, login_required
-from onewebaccess.models import User
+from onewebaccess.models import User,RegisterHost
 
 blue = Blueprint('home',__name__,template_folder='templates')
 
