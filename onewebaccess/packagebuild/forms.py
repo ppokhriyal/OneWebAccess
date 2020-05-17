@@ -1,7 +1,7 @@
 from flask_wtf import FlaskForm
 from wtforms import StringField,SubmitField,BooleanField,TextAreaField,SelectField,IntegerField
 from wtforms.validators import DataRequired,ValidationError
-from onewebaccess.home.models import User
+
 
 
 
