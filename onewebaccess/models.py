@@ -5,7 +5,10 @@ from flask_login import UserMixin
 
 @login_manager.user_loader
 def load_user(user_id):
-	return User.query.get(int(user_id))
+	try:
+		return User.query.get(int(user_id))
+	except:
+		return None
 
 
 class User(db.Model,UserMixin):
@@ -19,7 +22,7 @@ class User(db.Model,UserMixin):
 	pb_info = db.relationship('PB',backref='pb_author',lazy=True,cascade='all,delete-orphan')
 	
 	def __repr__(self):
-		return f"User('{self.username}')"
+		return f"User('{self.username}','{self.reg_node}')"
 
 class PB(db.Model):
 	__bind_key__ = 'pb'
@@ -41,7 +44,7 @@ class RegisterHost(db.Model):
 	ipaddress = db.Column(db.String(20),unique=True,nullable=False)
 	hostname = db.Column(db.String(20),nullable=False)
 	date_posted = db.Column(db.DateTime(),nullable=False,default=datetime.now)
-	user_id = db.Column(db.Integer, db.ForeignKey('user.id'),nullable=False)
+	user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
 
 	def __repr__(self):
 		return f"{self.ipaddress}"

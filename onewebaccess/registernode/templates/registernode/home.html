@@ -3,54 +3,72 @@
 	<nav aria-label="breadcrumb">
   		<ol class="breadcrumb">
     		<li class="breadcrumb-item"><i class="fas fa-home mr-2"></i><a href="{{url_for('home.home')}}">Home</a></li>
-    		<li class="breadcrumb-item active" aria-current="page"><i class="fas fa-laptop mr-3"></i>Register Node</li>
+    		<li class="breadcrumb-item active" aria-current="page"><i class="fas fa-laptop mr-2"></i>Register Node</li>
   		</ol>
 	</nav>
 	<div class="container mt-3">
 	<div class="btn-group float-right mb-2" role="group" aria-label="Basic example">
 		<button type="button" class="btn btn-sm btn-info" disabled>Total Nodes : {{reg_node_count}}</button>
 		<a class="btn btn-sm btn-primary btn-success" href="{{url_for('registernode.add')}}" role="button">Add new node</a>
+		<a class="btn btn-sm btn-primary btn-warning" href="{{url_for('registernode.home')}}"><span class="fas fa-refresh mb-1"></span></a>
 	</div>
-	
+	<!--Registered Node Table-->
 	<table class="table table-hover  table-sm "id="tablepaginate">
-  	<thead class="thead-dark">
-    <tr>
-      <th scope="col">ID</th>
-      <th scope="col">IP-Address</th>
-      <th scope="col">Hostname</th>
-      <th scope="col">Status</th>
-      <th scope="col">Action</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th scope="row">1</th>
-      <td>Mark</td>
-      <td>Otto</td>
-      <td>@mdo</td>
-      <td>@mdo</td>
-    </tr>
-    <tr>
-      <th scope="row">2</th>
-      <td>Jacob</td>
-      <td>Thornton</td>
-      <td>@fat</td>
-      <td>@fat</td>
-    </tr>
-    <tr>
-      <th scope="row">3</th>
-      <td colspan="2">Larry the Bird</td>
-      <td>@twitter</td>
-      <td>@fat</td>
-    </tr>
-     <tr>
-      <th scope="row">4</th>
-      <td colspan="2">Larry the Bird</td>
-      <td>@twitter</td>
-      <td>@fat</td>
-    </tr>
-  </tbody>
-</table>
+  		<thead class="thead-dark">
+    		<tr>
+      			<th scope="col">ID</th>
+      			<th scope="col">Date</th>
+      			<th scope="col">IP-Address</th>
+      			<th scope="col">Hostname</th>
+      			<th scope="col">Status</th>
+      			<th scope="col">Action</th>
+    		</tr>
+  		</thead>
+  		<tbody>
+  			{% if reg_node_count == 0 %}
+    			<tr>
+      				<th scope="row">1</th>
+      				<td>NA</td>
+      				<td>NA</td>
+      				<td>NA</td>
+      				<td>NA</td>
+    			</tr>
+    		{% else %}
+    			{%set host_status = namespace(value=0) %}
+    			{% for i in regnode.items %}
+    			<tr>
+      				<th scope="row">{{i.id}}</th>
+      				<td>{{i.date_posted.strftime('%d-%m-%Y')}}</td>
+      				<td>{{i.ipaddress}}</td>
+      				<td>{{i.hostname}}</td>
+      				{%if host_ip_status[host_status.value] == 'Running'%}
+      					<td><i class="fas fa-thumbs-up"></i></td>
+      				{% else %}
+      					<td><i class="fas fa-thumbs-down"></i></td>
+      				{% endif %}
+      				{% if i.register_host_node == current_user %}
+      					<td><a href="#" class="badge badge-danger">Remove</a></td>
+      				{% else %}
+      					<td>NA</td>
+      				{% endif %}	
+    			</tr>
+    			{% set host_status.value = host_status.value + 1 %}
+    			{% endfor %}
+    		{% endif %}
+  		</tbody>
+	</table>
 </div>
-
+<div class="rounded-0 col-lg-12 mx-auto">
+	{% for page_num in regnode.iter_pages(left_edge=1,right_edge=1,left_current=1,right_current=2) %}
+    	{% if page_num %}
+        	{% if regnode.page == page_num %}
+          		<a class="btn btn-secondary mb-4 mt-2" href="{{ url_for('registernode.home',page=page_num)}}">{{ page_num }}</a>
+        	{% else %}
+          		<a class="btn btn-outline-info mb-4 mt-2" href="{{ url_for('registernode.home',page=page_num)}}">{{ page_num }}</a>
+        	{% endif %}  
+      	{% else %}
+        	...
+      	{% endif %}
+    {% endfor %}
+</div>	
 {% endblock content %}
