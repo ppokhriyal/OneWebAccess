@@ -56,5 +56,19 @@ def add():
 			flash (f'Database Update Error : {str(form.remote_host_ip.data)}','danger')
 			return redirect(url_for('registernode.home'))
 
+		return redirect(url_for('registernode.home'))
 	return render_template('registernode/add.html',title='Add Node',form=form,publickey_content=publickey_content)
 
+
+@blue.route('/remove/<int:node_id>')
+@login_required
+def remove(node_id):
+	node_info = RegisterHost.query.get_or_404(node_id)
+
+	if node_info.register_host_node != current_user:
+		abort(403)
+
+	db.session.delete(node_info)
+	db.session.commit()
+	flash('Remote Node removed successfully','success')
+	return redirect(url_for('registernode.home'))

@@ -43,12 +43,12 @@
       				<td>{{i.ipaddress}}</td>
       				<td>{{i.hostname}}</td>
       				{%if host_ip_status[host_status.value] == 'Running'%}
-      					<td><i class="fas fa-thumbs-up" style="color: #2874a6"></i></td>
+      					<td><i class="fas fa-thumbs-up" style="color: #3498db"></i></td>
       				{% else %}
       					<td><i class="fas fa-thumbs-down" style="color: #cb4335"></i></td>
       				{% endif %}
       				{% if i.register_host_node == current_user %}
-      					<td><a href="#" class="badge badge-info">Remove</a></td>
+      					<td><a href="{{url_for('registernode.remove',node_id=i.id)}}" class="badge badge-danger">Remove</a></td>
       				{% else %}
       					<td>NA</td>
       				{% endif %}	
