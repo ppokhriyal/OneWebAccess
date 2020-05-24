@@ -8,7 +8,10 @@ blue = Blueprint('packagebuild',__name__,template_folder='templates')
 
 @blue.route('/home')
 def home():
-	return render_template('packagebuild/home.html',title='VXL : Package Builder')
+	page = request.args.get('page',1,type=int)
+	pb = PB.query.paginate(page=page,per_page=10)
+	pb_count = len(db.session.query(PB).all())
+	return render_template('packagebuild/home.html',title='VXL : Package Builder',pb_count=pb_count)
 
 @blue.route('/new')
 @login_required

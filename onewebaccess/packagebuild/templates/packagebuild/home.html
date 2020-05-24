@@ -6,10 +6,35 @@
     		<li class="breadcrumb-item active" aria-current="page"><i class="fas fa-box mr-2"></i>Package Builder</li>
   		</ol>
 	</nav>
-	<div class="btn-group float-right" role="group" aria-label="Basic example">
-		<button type="button" class="btn btn-sm btn-info" disabled>Total Builds : 0</button>
+	<div class="btn-group float-right mb-2" role="group" aria-label="Basic example">
+		<button type="button" class="btn btn-sm btn-secondary" disabled>Total Builds : 0</button>
 		<a class="btn btn-sm btn-primary btn-success" href="{{url_for('packagebuild.build')}}" role="button">Create new package</a>
+		<a class="btn btn-sm btn-primary btn-warning" href="{{url_for('packagebuild.home')}}"><span class="fas fa-refresh mb-1"></span></a>
 	</div>
-	
-	
+	<!--Packge Build Tabel-->
+	<table class="table table-hover  table-sm "id="tablepaginate">
+		<thead class="thead-dark">
+			<tr>
+      			<th scope="col">ID</th>
+      			<th scope="col">Package Name</th>
+      			<th scope="col">Created On</th>
+      			<th scope="col">Patch Name</th>
+      			<th scope="col">View</th>
+      			<th scope="col">Action</th>
+    		</tr>
+		</thead>
+		<tbody>
+			{% if pb_count == 0 %}
+				<tr>
+      				<th scope="row">NA</th>
+      				<td>NA</td>
+      				<td>NA</td>
+      				<td>NA</td>
+      				<td>NA</td>
+              		<td>NA</td>
+    			</tr>
+			{% else %}
+			{% endif %}
+		</tbody>
+	</table>
 {% endblock content %}

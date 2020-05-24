@@ -1,5 +1,5 @@
 from flask import Blueprint,render_template,url_for,flash,redirect,request,abort,session,jsonify
-from onewebaccess import app,db,bcrypt,celery,login_manager
+from onewebaccess import app,db,bcrypt,login_manager
 from onewebaccess.registernode.forms import RegisterNodeForm
 from flask_login import login_user, current_user, logout_user, login_required
 from onewebaccess.models import User,RegisterHost
@@ -40,26 +40,21 @@ def add():
 	with open('/root/.ssh/id_rsa.pub',"r") as f:
 		publickey_content = f.read()
 	if form.validate_on_submit():
-		user_id = User.query.filter_by(username=current_user.username).first()
-		check_host.delay(str(form.remote_host_ip.data),session_user_id = user_id.id)
-		return redirect(url_for('registernode.home'))
+		try:
+			client.connect(str(form.remote_host_ip.data),timeout=1)
+		except Exception as ee:
+			flash (f'Connection Timeout : {str(form.remote_host_ip.data)}','danger')
+			return redirect(url_for('registernode.home'))
+		
+		stdin, stdout, stderr = client.exec_command("hostname")
+		cmd_hostname = stdout.read()
+		try:
+			update_db = RegisterHost(ipaddress=str(form.remote_host_ip.data),hostname=cmd_hostname.decode('utf-8').rstrip('\n'),register_host_node=current_user)
+			db.session.add(update_db)
+			db.session.commit()
+		except Exception as ee:
+			flash (f'Database Update Error : {str(form.remote_host_ip.data)}','danger')
+			return redirect(url_for('registernode.home'))
 
 	return render_template('registernode/add.html',title='Add Node',form=form,publickey_content=publickey_content)
 
-#Celery Task
-@celery.task(name='check_host')
-def check_host(ip_address,session_user_id):
-	try:	
-		client.connect(str(ip_address),timeout=1)
-	except Exception as ee:
-		return f'Connection Timeout : {ip_address}'
-
-	stdin, stdout, stderr = client.exec_command("hostname")
-	cmd_hostname = stdout.read()
-	try:
-		update_db = RegisterHost(ipaddress=ip_address,hostname=cmd_hostname.decode('utf-8').rstrip('\n'),user_id=session_user_id)
-		db.session.add(update_db)
-		db.session.commit()
-	except Exception as ee:
-		flash(f"Database Update Error : {ip_address}")
-		return f'Database Update Error : {ip_address}'
