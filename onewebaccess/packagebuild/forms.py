@@ -18,6 +18,7 @@ class PackageBuildForm(FlaskForm):
 	patchtype = SelectField('Patch Format',choices=[('Current Patch','Current Patch'),('Legacy Patch','Legacy Patch')])
 	patchname = StringField('Patch Name')
 	removepkg = TextAreaField('Remove Packages')
+	menu = StringField('Menu')
 	install_script = TextAreaField('Install Script')
 	submit = SubmitField('Build')
 

@@ -80,6 +80,13 @@
             		<small><code><strong>Legacy Patch </strong> is available for 45 Build image and below</code></small>
         		</div>
       		</div>
+           <div class="form-group row">
+          <label class="col-sm-2 col-form-label">Menu Entry</label>
+          <div class="col-sm-6">
+            {{form.menu(class="form-control",placeholder='Application Name;/path/to/icon;/path/to/application_executable')}}
+            <small><code>Give the Application name ; absolute path of icon ; absolute path of executable program</code></small>
+          </div>
+        </div>
       		<p><strong>Remove Files and Packages</strong>
   				<br><small>List all the Files and Packages to be removed. Use smi-colon ' ; ' as a seprator.<br>Prefixes : <b>boot:, core:, basic:, apps:, data: and root:</b>.<br>
         		Wild-Card : You can give the <b>wild-card "*"</b> after the package name.<b>e.g apps:example*;basic:example2*</b></small></p>
@@ -88,6 +95,7 @@
       				{{form.removepkg(class="form-control",id="remove",placeholder='Example : apps:abc.sq;boot:kernel;apps:example*;basic:example2*')}}
     			</div>
   			</div>
+
   	  		<p><strong>Install Script </strong>
   			<br><small>Write your custom install script.</small></p>
   			<div class="form-group row">

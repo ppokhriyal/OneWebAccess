@@ -37,7 +37,7 @@ def build():
 	
 	#PB WorkArea
 	pb_pkgbuildid = random.randint(1111,9999)
-	pb_pkgbuildpath = '/var/www/html/Packages/'
+	pb_pkgbuildpath = '/var/www/html/package/'+current_user.username.replace(' ','_')+'/'
 
 	#Remove Builds which are not finished
 	if not len(os.listdir(pb_pkgbuildpath)) == 0:
@@ -74,7 +74,69 @@ def build():
 		#Check Patch check box is checked or not
 		if form.patchboolean.data == True:
 			#Patch is required
-			
+			#Check for patch type
+			if form.patchtype.data == "Current Patch":
+				#Current Patch
+				#Create work area
+				os.makedirs(pb_pkgbuildpath+str(form.buildid.data)+'/Patch/sda1/data/firmware_update/add-pkg')
+				os.makedirs(pb_pkgbuildpath+str(form.buildid.data)+'/Patch/root')
+				#Create default findminmax script
+				with open(pb_pkgbuildpath+str(form.buildid.data)+'/Patch/root/findminmax.sh',"a") as f:
+					f.write('#!/bin/bash')
+					f.write('\n')
+					f.write('mount -o remount,rw /sda1')
+					f.write('\n')
+					f.write('exit 0')
+				#Dos2unix findminmax.sh
+				subprocess.call(["dos2unix " +pb_pkgbuildpath+str(form.buildid.data)+"/Patch/root/findminmax.sh"],shell=True)
+				#Copy newly creates package
+				cmd = "cp -pa "+pb_pkgbuildpath+str(form.buildid.data)+'/'+str(form.osarch.data)+'/'+str(form.pkgname.data).casefold().split(':')[0]+'/'+str(form.pkgname.data).casefold().split(':')[1]+'.sq'+" "+pb_pkgbuildpath+str(form.buildid.data)+'/Patch/sda1/data/firmware_update/add-pkg/'+str(form.pkgname.data).casefold().split(':')[0]+':'+str(form.pkgname.data).casefold().split(':')[1]+'.sq'
+				proc = subprocess.Popen(cmd,shell=True,stdout=subprocess.PIPE,stderr=subprocess.PIPE)
+				o,e = proc.communicate()
+				#Check for remove packages and files
+				if len(form.removepkg.data) != 0:
+					os.makedirs(pb_pkgbuildpath+str(form.buildid.data)+'/Patch/sda1/data/firmware_update/delete-pkg')
+					remove_pkgs = form.removepkg.data.split(';')
+					for i in remove_pkgs:
+						#Check for prefix
+						prefix = i.split(':',1)
+						if prefix[0].casefold() not in ['core','basic','apps','boot','data','root']:
+							flash(f'Missing Prefix in {prefix[0]},while removing package','danger')
+							return redirect(url_for('packagebuild.home'))
+						#Add delete package	
+						if prefix[0].casefold() == 'core':
+							Path(pb_pkgbuildpath+str(form.buildid.data)+'/Patch/sda1/data/firmware_update/delete-pkg/core:'+prefix[1]).touch()
+						if prefix[0].casefold() == 'basic':
+							Path(pb_pkgbuildpath+str(form.buildid.data)+'/Patch/sda1/data/firmware_update/delete-pkg/basic:'+prefix[1]).touch()
+						if prefix[0].casefold() == 'apps':
+							Path(pb_pkgbuildpath+str(form.buildid.data)+'/Patch/sda1/data/firmware_update/delete-pkg/apps:'+prefix[1]).touch()
+						if prefix[0].casefold() == 'boot':
+							Path(pb_pkgbuildpath+str(form.buildid.data)+'/Patch/sda1/data/firmware_update/delete-pkg/boot:'+prefix[1]).touch()
+						if prefix[0].casefold() == 'data':
+							Path(pb_pkgbuildpath+str(form.buildid.data)+'/Patch/sda1/data/firmware_update/delete-pkg/data:'+prefix[1]).touch()
+						if prefix[0].casefold() == 'root':
+							Path(pb_pkgbuildpath+str(form.buildid.data)+'/Patch/sda1/data/firmware_update/delete-pkg/root:'+prefix[1]).touch()
+				#Check for install script
+				if len(form.install_script.data) != 0:
+					install_script = form.install_script.data.split(' ')
+					f = open(pb_pkgbuildpath+str(form.buildid.data)+'/Patch/root/install',"a+")
+					f.write("#!/bin/bash\n")
+					for i in " ".join(install_script):
+						f.write(i)
+
+					f.close()
+				#Check if menuentry is required
+				if len(form.menu.data) != 0:
+					install_script = form.menu.data.split(';')
+					f = open(pb_pkgbuildpath+str(form.buildid.data)+'/Patch/root/install',"a+")
+					f.write(f"menu_entry='prog \"{install_script[0]}\" \"{install_script[1]}\" \"{install_script[2]}\"'")
+					f.write('\n')
+					f.write(f"sed -i '/\sprog \"AnyConnect.*/a '\"$menu_entry\"'' /sda1/data/menu.orig")
+					f.close()
+			else:
+				#Legacy Patch
+				pass
 		else:
 			#Patch is not required
+			pass
 	return render_template('packagebuild/build.html',title='VXL : Package Builder',form=form,build=pb_pkgbuildid)

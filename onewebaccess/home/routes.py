@@ -3,6 +3,7 @@ from onewebaccess import app,db, bcrypt,login_manager
 from onewebaccess.home.forms import LoginForm,RegistrationForm
 from flask_login import login_user, current_user, logout_user, login_required
 from onewebaccess.models import User,RegisterHost
+import os
 
 blue = Blueprint('home',__name__,template_folder='templates')
 
@@ -35,6 +36,12 @@ def signup():
 		user = User(username=form.username.data, email=form.email.data, password=hashed_password,password_decrypted=form.password.data)
 		db.session.add(user)
 		db.session.commit()
+		
+		#Create the working area for new user
+		os.makedirs('/var/www/html/firmware/'+form.username.data.replace(' ','_'))
+		os.makedirs('/var/www/html/package/'+form.username.data.replace(' ','_'))
+		os.makedirs('/var/www/html/image/'+form.username.data.replace(' ','_'))
+
 		flash(f'Your Account has been created! You are now able to login','success')
 		return redirect(url_for('home.signin'))
 	return render_template('home/register.html',title='Sign up',form=form)
