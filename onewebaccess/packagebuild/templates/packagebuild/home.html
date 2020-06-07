@@ -15,7 +15,7 @@
 	<table class="table table-hover  table-sm "id="tablepaginate">
 		<thead class="thead-dark">
 			<tr>
-      			<th scope="col">ID</th>
+      			<th scope="col">Build-ID</th>
       			<th scope="col">Package Name</th>
       			<th scope="col">Created On</th>
       			<th scope="col">Patch Name</th>
@@ -26,7 +26,7 @@
 		<tbody>
 			{% if pb_count == 0 %}
 				<tr>
-      				<th scope="row">NA</th>
+      				<td>NA</td>
       				<td>NA</td>
       				<td>NA</td>
       				<td>NA</td>
@@ -34,6 +34,18 @@
               		<td>NA</td>
     			</tr>
 			{% else %}
+				{% for i in pb.items %}
+					<td>{{i.buildid}}</td>
+					<td>{{i.pkgname}}</td>
+					<td>{{i.date_posted.strftime('%d-%m-%Y')}}</td>
+					<td>{{i.patchname}}</td>
+					<td>NA</td>
+					{% if i.pb_author == current_user %}
+						<td><a href="{{url_for('registernode.remove',node_id=i.id)}}" class="badge badge-danger">Remove</a></td>
+					{% else %}
+						<td></td>
+					{% endif %}	
+				{% endfor %}
 			{% endif %}
 		</tbody>
 	</table>
